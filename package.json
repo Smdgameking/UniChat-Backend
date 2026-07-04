@@ -1,0 +1,24 @@
+{
+  "name": "discord-clone-backend",
+  "version": "1.0.0",
+  "description": "The backend service for a full-stack Discord Clone, built with Node.js, Express.js, and PostgreSQL. This project is designed as a learning-focused implementation to understand how modern real-time applications manage authentication, APIs, databases, and communication between clients.",
+  "keywords": [
+    "NodeJs",
+    "Backend"
+  ],
+  "homepage": "https://github.com/Smdgameking/Discord-Clone-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/Smdgameking/Discord-Clone-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Smdgameking/Discord-Clone-Backend.git"
+  },
+  "license": "ISC",
+  "author": "SMDHussain",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
