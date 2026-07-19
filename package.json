@@ -1,0 +1,57 @@
+{
+  "name": "discord-clone-backend",
+  "version": "1.0.0",
+  "description": "The backend service for a full-stack Discord Clone, built with Node.js, Express.js, and PostgreSQL. This project is designed as a learning-focused implementation to understand how modern real-time applications manage authentication, APIs, databases, and communication between clients.",
+  "keywords": [
+    "NodeJs",
+    "Backend"
+  ],
+  "homepage": "https://github.com/Smdgameking/Discord-Clone-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/Smdgameking/Discord-Clone-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Smdgameking/Discord-Clone-Backend.git"
+  },
+  "license": "ISC",
+  "author": "SMDHussain",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^1.41.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.7.4",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^9.0.3",
+    "pg": "^8.22.0",
+    "redis": "^6.1.0",
+    "socket.io": "^4.8.3",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^14.0.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.6.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.4"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "core-js@3.49.0": true
+  }
+}
