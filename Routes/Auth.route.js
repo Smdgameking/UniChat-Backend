@@ -1,17 +1,8 @@
 const express = require('express');
 const route = express.Router();
-route.use(express.json());
-route.use(express.urlencoded({ extended: true }));
+const { register, login } = require('../controller/user.controller');
 
-route.post('/login', (req, res, next)=>{
-    console.log('Login route hit');
-    next();
-}, (req, res) => {
-    const { email, password } = req.body;
-    console.log(`Logining user with email: ${email} and password: ${password}`);
-    res.json({
-        success: true
-    });
-});
+route.post('/register', register);
+route.post('/login', login);
 
 module.exports = route;

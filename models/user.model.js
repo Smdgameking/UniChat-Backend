@@ -16,5 +16,28 @@ const User = mongoose.Schema({
     password:{
         type: String,
         required: true
+    },
+    confirmpassword:{
+        type: String,
+        required: true
+    },
+    dob:{
+        type: Date,
+        required: true
+    },
+    gender:{
+        type: String,
+        enum: ['male', 'female'],
+    },
+    bio:{
+        type: String,
+    },
+    country:{
+        type: String,
+    },
+    phoneNo:{
+        type: Number,
     }
 })
+
+module.exports = mongoose.model('User', User);
