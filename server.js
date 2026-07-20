@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const authRoute = require('./Routes/Auth.route');
 const authenticateToken = require('./middleware/auth.middleware');
+const user = require('./Routes/user.route');
 const cors = require("cors");
 require("dotenv").config();
 require('./db/db');
@@ -16,6 +17,7 @@ app.use('/auth', authRoute);
 // Protected routes - token required for all other routes
 app.use(authenticateToken);
 
+app.use('/user', user);
 // Example protected route
 app.get('/profile', (req, res) => {
     res.json({

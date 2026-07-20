@@ -37,6 +37,10 @@ const User = mongoose.Schema({
     },
     phoneNo:{
         type: Number,
+    },
+    profileInComplete:{
+        type: Boolean,
+        required: true
     }
 })
 

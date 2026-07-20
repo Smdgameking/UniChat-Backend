@@ -38,6 +38,7 @@ const register = async (req, res, next) => {
             password: hashedPassword,
             confirmpassword: hashedPassword,
             dob,
+            profileInComplete: true
         });
 
         await user.save();
@@ -54,9 +55,7 @@ const register = async (req, res, next) => {
             token,
             user: {
                 id: user._id,
-                displayName: user.displayName,
                 username: user.username,
-                email: user.email
             }
         });
     } catch (error) {
@@ -100,16 +99,15 @@ const login = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
-
+        const pic = user.profileInComplete
         res.status(200).json({
             success: true,
+            profileInComplete: pic,
             message: 'Login successful',
             token,
             user: {
                 id: user._id,
-                displayName: user.displayName,
                 username: user.username,
-                email: user.email
             }
         });
     } catch (error) {
