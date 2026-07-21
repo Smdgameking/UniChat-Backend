@@ -3,6 +3,8 @@ const app = express();
 const authRoute = require('./Routes/Auth.route');
 const authenticateToken = require('./middleware/auth.middleware');
 const user = require('./Routes/user.route');
+const friend = require('./Routes/friend.route');
+const notification = require('./Routes/notification.route');
 const cors = require("cors");
 require("dotenv").config();
 require('./db/db');
@@ -18,6 +20,8 @@ app.use('/auth', authRoute);
 app.use(authenticateToken);
 
 app.use('/user', user);
+app.use('/friend', friend);
+app.use('/notification', notification);
 // Example protected route
 app.get('/profile', (req, res) => {
     res.json({
