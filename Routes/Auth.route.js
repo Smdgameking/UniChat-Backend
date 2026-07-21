@@ -1,8 +1,17 @@
 const express = require('express');
 const route = express.Router();
 const { register, login } = require('../controller/user.controller');
+const { validateRegister, validateLogin, handleValidationErrors } = require('../middleware/validation.middleware');
+const { authLimiter } = require('../middleware/rateLimit.middleware');
 
-route.post('/register', register);
-route.post('/login', login);
+// Apply strict rate limiting to auth endpoints
+// Prevents brute force attacks on login/register
+route.use(authLimiter);
+
+// Register with validation and rate limiting
+route.post('/register', validateRegister, handleValidationErrors, register);
+
+// Login with validation and rate limiting
+route.post('/login', validateLogin, handleValidationErrors, login);
 
 module.exports = route;

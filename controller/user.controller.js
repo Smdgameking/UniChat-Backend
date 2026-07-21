@@ -1,61 +1,59 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { generateAccessToken, generateRefreshToken } = require('../utils/token.utils');
 
 const register = async (req, res, next) => {
     try {
-        const { displayName, username, email, password, confirmpassword, dob} = req.body;
+        const { displayName, username, email, password, dob } = req.body;
 
-        if (!username || !email || !password || !confirmpassword || !dob) {
+        // Input validation
+        if (!username || !email || !password || !dob) {
             return res.status(400).json({
                 success: false,
-                message: 'Please provide all required fields'
+                message: 'Please provide all required fields: username, email, password, and date of birth'
             });
         }
 
-        if (password !== confirmpassword) {
-            return res.status(400).json({
-                success: false,
-                message: 'Passwords do not match'
-            });
-        }
-
+        // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
-            return res.status(400).json({
+            return res.status(409).json({
                 success: false,
-                message: 'User with this email or username already exists'
+                message: 'Registration failed. Please try again.'
             });
         }
 
+        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Create user
         const user = new User({
             displayName,
             username,
             email,
             password: hashedPassword,
-            confirmpassword: hashedPassword,
             dob,
             profileInComplete: true
         });
 
         await user.save();
 
-        const token = jwt.sign(
-            { id: user._id, email: user.email, username: user.username },
-            process.env.JWT_SECRET,
-            { expiresIn: '7d' }
-        );
+        // Generate access and refresh tokens
+        const accessToken = generateAccessToken(user);
+        const refreshToken = await generateRefreshToken(user);
 
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
-            token,
+            accessToken,
+            refreshToken,
             user: {
                 id: user._id,
                 username: user.username,
+                displayName: user.displayName || user.username,
+                email: user.email
             }
         });
     } catch (error) {
@@ -71,6 +69,7 @@ const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
+        // Input validation
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -78,6 +77,7 @@ const login = async (req, res, next) => {
             });
         }
 
+        // Find user
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({
@@ -86,6 +86,7 @@ const login = async (req, res, next) => {
             });
         }
 
+        // Verify password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
@@ -94,20 +95,21 @@ const login = async (req, res, next) => {
             });
         }
 
-        const token = jwt.sign(
-            { id: user._id, email: user.email, username: user.username },
-            process.env.JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-        const pic = user.profileInComplete
+        // Generate access and refresh tokens
+        const accessToken = generateAccessToken(user);
+        const refreshToken = await generateRefreshToken(user);
+
         res.status(200).json({
             success: true,
-            profileInComplete: pic,
+            profileInComplete: user.profileInComplete,
             message: 'Login successful',
-            token,
+            accessToken,
+            refreshToken,
             user: {
                 id: user._id,
                 username: user.username,
+                displayName: user.displayName || user.username,
+                email: user.email
             }
         });
     } catch (error) {

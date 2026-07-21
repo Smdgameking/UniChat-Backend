@@ -17,10 +17,6 @@ const User = mongoose.Schema({
         type: String,
         required: true
     },
-    confirmpassword:{
-        type: String,
-        required: true
-    },
     dob:{
         type: Date,
         required: true
@@ -37,6 +33,10 @@ const User = mongoose.Schema({
     },
     phoneNo:{
         type: Number,
+    },
+    avatar:{
+        type: String,
+        default: null
     },
     profileInComplete:{
         type: Boolean,

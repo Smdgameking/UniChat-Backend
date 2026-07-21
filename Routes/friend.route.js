@@ -159,4 +159,56 @@ route.post('/request', async (req, res) => {
     }
 });
 
+// Get friends list with online status
+route.get('/list', async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // Find all accepted friend requests where user is either requester or recipient
+        const friendships = await Friend.find({
+            $or: [
+                { requester: userId, status: 'accepted' },
+                { recipient: userId, status: 'accepted' }
+            ]
+        }).lean();
+
+        // Extract friend IDs
+        const friendIds = friendships.map(f => 
+            f.requester.toString() === userId.toString() ? f.recipient : f.requester
+        );
+
+        if (friendIds.length === 0) {
+            return res.status(200).json({
+                success: true,
+                friends: []
+            });
+        }
+
+        // Get friend details
+        const friends = await User.find({ _id: { $in: friendIds } })
+            .select('username displayName avatar')
+            .lean();
+
+        // Format response with online status
+        const formattedFriends = friends.map(friend => ({
+            id: friend._id,
+            username: friend.username,
+            displayName: friend.displayName || friend.username,
+            status: 'offline', // Default status, will be updated by online status system
+            avatar: friend.avatar
+        }));
+
+        res.status(200).json({
+            success: true,
+            friends: formattedFriends
+        });
+    } catch (error) {
+        console.error('Get friends list error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch friends'
+        });
+    }
+});
+
 module.exports = route;
