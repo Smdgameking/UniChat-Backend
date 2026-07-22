@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-const { register, login } = require('../controller/user.controller');
+const { registerHandler, loginHandler } = require('../controller/user.controller');
 const { validateRegister, validateLogin, handleValidationErrors } = require('../middleware/validation.middleware');
 const { authLimiter } = require('../middleware/rateLimit.middleware');
 
@@ -9,9 +9,9 @@ const { authLimiter } = require('../middleware/rateLimit.middleware');
 route.use(authLimiter);
 
 // Register with validation and rate limiting
-route.post('/register', validateRegister, handleValidationErrors, register);
+route.post('/register', validateRegister, handleValidationErrors, registerHandler);
 
 // Login with validation and rate limiting
-route.post('/login', validateLogin, handleValidationErrors, login);
+route.post('/login', validateLogin, handleValidationErrors, loginHandler);
 
 module.exports = route;

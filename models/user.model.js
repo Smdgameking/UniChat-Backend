@@ -23,7 +23,7 @@ const User = mongoose.Schema({
     },
     gender:{
         type: String,
-        enum: ['male', 'female'],
+        enum: ['male', 'female', 'non-binary', 'prefer-not-to-say'],
     },
     bio:{
         type: String,
@@ -37,6 +37,23 @@ const User = mongoose.Schema({
     avatar:{
         type: String,
         default: null
+    },
+    banner:{
+        type: String,
+        default: null
+    },
+    status:{
+        type: String,
+        enum: ['online', 'away', 'dnd', 'offline'],
+        default: 'offline'
+    },
+    lastSeen:{
+        type: Date,
+        default: Date.now
+    },
+    emailVerified:{
+        type: Boolean,
+        default: false
     },
     profileInComplete:{
         type: Boolean,

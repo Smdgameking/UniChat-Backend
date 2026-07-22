@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const PasswordResetSchema = mongoose.Schema({
+const EmailVerificationSchema = mongoose.Schema({
     token: {
         type: String,
         required: true,
@@ -11,11 +11,15 @@ const PasswordResetSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     expiresAt: {
         type: Date,
         required: true
     },
-    used: {
+    verified: {
         type: Boolean,
         default: false
     },
@@ -26,6 +30,6 @@ const PasswordResetSchema = mongoose.Schema({
 });
 
 // Auto-delete expired tokens
-PasswordResetSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+EmailVerificationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-module.exports = mongoose.model('PasswordReset', PasswordResetSchema);
+module.exports = mongoose.model('EmailVerification', EmailVerificationSchema);
